@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), JobsClickLister {
         mainActivityBinding.shiftList.adapter = jobsAdapter
     }
 
-    fun observers() {
+    private fun observers() {
         mainViewModel.shiftResponse.observe(this, {
 
             Thread(Runnable {

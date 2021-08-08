@@ -1,11 +1,5 @@
 package com.temper.myapplication.services.helpers
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
-import com.temper.myapplication.Shifts
-import com.temper.myapplication.exceptions.NoConnectivityException
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

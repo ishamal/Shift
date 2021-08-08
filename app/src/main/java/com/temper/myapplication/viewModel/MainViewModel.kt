@@ -32,7 +32,6 @@ class MainViewModel : ViewModel() {
             }
         }
     }
-
 }
 
 @Suppress("UNCHECKED_CAST")
