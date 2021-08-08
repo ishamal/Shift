@@ -19,4 +19,6 @@
     <color name="text_color_popup">#5F6163</color>
     <color name="warning_primary">#FCB75A</color>
 
+    <color name="transparent">#00000000</color>
+
 </resources>

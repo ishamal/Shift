@@ -1,5 +1,6 @@
 package com.temper.myapplication.viewModel
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -24,9 +25,9 @@ class MainViewModel : ViewModel() {
 
     val shiftResponse  = MutableLiveData<ShiftResponse>()
 
-    fun getJobs(date : String) {
+    fun getJobs(date : String, loadingView : View?) {
         scope.launch {
-            val result = shiftRepository.getJobList(date, null)
+            val result = shiftRepository.getJobList(date, loadingView)
             if (result != null) {
                 shiftResponse.postValue(result)
             }

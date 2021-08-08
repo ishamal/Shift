@@ -14,7 +14,7 @@ import java.io.IOException
 
 open class BaseRepository {
 
-    suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, error: String, view : ConstraintLayout?): T? {
+    suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, error: String, view : View?): T? {
         try {
             val result = apiOutput(call, error)
             var output: T? = null

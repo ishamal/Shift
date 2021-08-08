@@ -2,6 +2,7 @@ package com.temper.myapplication.views.viewHolder
 
 import android.content.Context
 import android.view.View
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.temper.myapplication.R
@@ -15,9 +16,16 @@ class JobsViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
 
     private val context: Context = view.context
     private lateinit var jobView : ListViewItemComponent
+    private lateinit var itemClickBtn : Button
 
     fun bind(job : JobDto, jobsClickLister: JobsClickLister) {
         jobView = view.findViewById(R.id.listItem)
+        itemClickBtn = view.findViewById(R.id.itemButton)
+
+        itemClickBtn.setOnClickListener {
+            jobsClickLister.onClicked(job)
+        }
+
         if (job.earnings_per_hour != null && job.earnings_per_hour?.amount != null) {
             jobView.setHourlyRate("${job.earnings_per_hour?.currency?.let {
                 CurrencyUtil.getCurrencySymbol(

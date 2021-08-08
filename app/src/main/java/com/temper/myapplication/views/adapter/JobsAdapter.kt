@@ -37,5 +37,5 @@ class JobsAdapter(
 }
 
 interface JobsClickLister{
-    fun onClicked(job : JobDto, position: Int)
+    fun onClicked(job : JobDto)
 }
