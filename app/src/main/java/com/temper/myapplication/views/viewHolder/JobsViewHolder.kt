@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide
 import com.temper.myapplication.R
 import com.temper.myapplication.services.response.JobDto
 import com.temper.myapplication.utils.CurrencyUtil
-import com.temper.myapplication.utils.ImageUtil
 import com.temper.myapplication.utils.TimeUtil
 import com.temper.myapplication.views.adapter.JobsClickLister
 import com.temper.myapplication.views.components.ListViewItemComponent
@@ -38,6 +37,5 @@ class JobsViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
         Glide.with(jobView.getImageView())
             .load(job.job?.links?.hero_380_image)
             .into(jobView.getImageView())
-
     }
 }
