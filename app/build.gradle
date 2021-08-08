@@ -1,0 +1,95 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+}
+
+def getSecret = { key ->
+    Properties props = new Properties()
+    props.load(new FileInputStream(new File('secrets.properties')))
+    return props[key]
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    defaultConfig {
+        applicationId "com.temper.myapplication"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.buildConfigField "String", "API_SERVER_URL", getSecret('API_SERVER_URL')
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.mockito:mockito-core:$rootProject.libVersions.mokito"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test:core-ktx:$rootProject.libVersions.androidXTestCoreVersion"
+    testImplementation "androidx.test.ext:junit:$rootProject.libVersions.androidXTestExtKotlinRunnerVersion"
+
+
+    testImplementation "org.hamcrest:hamcrest-all:$rootProject.libVersions.hamcrestVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.libVersions.archTestingVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.libVersions.robolectricVersion"
+
+    //material.io
+//    implementation "com.google.android.material:$rootProject.libVersions.materialIo"
+
+    //Retrofit2
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.libVersions.retrofit2"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.libVersions.retrofit2"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.libVersions.retrofitGsonConverter"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$rootProject.libVersions.retrofit2CoroutinesAdapter"
+    //Okhttp3
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.libVersions.okhttp3"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.libVersions.okhttp3"
+
+    //Gson
+    implementation "com.google.code.gson:$rootProject.libVersions.Gson"
+
+    //swipe refresh layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.libVersions.swipRefresh"
+
+    implementation "com.github.tapadoo:alerter:$rootProject.libVersions.alerter"
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$rootProject.libVersions.Glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.libVersions.Glide"
+}

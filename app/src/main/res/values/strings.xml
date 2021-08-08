@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Shifts</string>
+    <string name="dummy_currency">12$</string>
+    <string name="sign_up_text">Schrijf je in</string>
+    <string name="log_in_text">Inloggen</string>
+
+    <!--    common -->
+
+    <string name="UNKNOWN_ERROR_OCCURRED">Unknown error occurred.</string>
+    <string name="PLEASE_TRY_AGAIN">Please try again.</string>
+    <string name="NO_INTERNET_CONNECTION">No Internet Connection.</string>
+    <string name="filter_button_text">Filter</string>
+
+</resources>
