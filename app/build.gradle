@@ -61,13 +61,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // AndroidX Test - JVM testing
-    testImplementation "androidx.test:core-ktx:$rootProject.libVersions.androidXTestCoreVersion"
-    testImplementation "androidx.test.ext:junit:$rootProject.libVersions.androidXTestExtKotlinRunnerVersion"
+    androidTestImplementation "androidx.test:core-ktx:$rootProject.libVersions.androidXTestCoreVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.libVersions.androidXTestExtKotlinRunnerVersion"
 
 
-    testImplementation "org.hamcrest:hamcrest-all:$rootProject.libVersions.hamcrestVersion"
-    testImplementation "androidx.arch.core:core-testing:$rootProject.libVersions.archTestingVersion"
-    testImplementation "org.robolectric:robolectric:$rootProject.libVersions.robolectricVersion"
+    androidTestImplementation "org.hamcrest:hamcrest-all:$rootProject.libVersions.hamcrestVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.libVersions.archTestingVersion"
+    androidTestImplementation "org.robolectric:robolectric:$rootProject.libVersions.robolectricVersion"
 
     //material.io
 //    implementation "com.google.android.material:$rootProject.libVersions.materialIo"
