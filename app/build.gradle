@@ -65,7 +65,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$rootProject.libVersions.androidXTestExtKotlinRunnerVersion"
 
 
-    androidTestImplementation "org.hamcrest:hamcrest-all:$rootProject.libVersions.hamcrestVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.libVersions.archTestingVersion"
     androidTestImplementation "org.robolectric:robolectric:$rootProject.libVersions.robolectricVersion"
 
@@ -92,4 +91,7 @@ dependencies {
     //Glide
     implementation "com.github.bumptech.glide:glide:$rootProject.libVersions.Glide"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.libVersions.Glide"
+
+    androidTestImplementation "com.google.truth:truth:1.1.3"
+
 }
