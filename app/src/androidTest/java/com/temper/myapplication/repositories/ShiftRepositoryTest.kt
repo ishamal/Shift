@@ -27,8 +27,16 @@ class ShiftRepositoryTest : TestCase() {
 
     @Test
     fun loadData_success() = runBlocking {
-        var result = shiftRepository.getJobList(TimeUtil.getCurrentDate("yyyy-MM-dd"), null)
+        val result = shiftRepository
+            .getJobList(TimeUtil.getCurrentDate("yyyy-MM-dd"), null)
         assertThat(result != null).isTrue()
+    }
+
+    @Test
+    fun loadData_emptyDate() = runBlocking {
+        val result = shiftRepository
+            .getJobList(TimeUtil.getCurrentDate(""), null)
+        assertThat(result == null).isTrue()
     }
 
 }

@@ -1,9 +1,7 @@
 package com.temper.myapplication.viewModel
 
 import android.view.View
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.temper.myapplication.repositories.ShiftRepository
 import com.temper.myapplication.services.ShiftService
 import com.temper.myapplication.services.response.ShiftResponse
@@ -15,18 +13,13 @@ import kotlin.coroutines.CoroutineContext
 
 class MainViewModel : ViewModel() {
 
-    private val parentJob = Job()
-    //create a coroutine context with the job and the dispatcher
-    private val coroutineContext: CoroutineContext get() = parentJob + Dispatchers.Default
-    //create a coroutine scope with the coroutine context
-    private val scope = CoroutineScope(coroutineContext)
-
     private val shiftRepository: ShiftRepository = ShiftRepository(ShiftService.client)
 
-    val shiftResponse  = MutableLiveData<ShiftResponse>()
+    private val shiftResponse  = MutableLiveData<ShiftResponse>()
+    val shiftLiveData : LiveData<ShiftResponse> get() = shiftResponse
 
     fun getJobs(date : String, loadingView : View?) {
-        scope.launch {
+        viewModelScope.launch {
             val result = shiftRepository.getJobList(date, loadingView)
             if (result != null) {
                 shiftResponse.postValue(result)
