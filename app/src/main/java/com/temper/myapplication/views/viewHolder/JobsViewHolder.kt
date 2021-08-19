@@ -1,33 +1,36 @@
 package com.temper.myapplication.views.viewHolder
 
-import android.content.Context
-import android.view.View
-import android.widget.Button
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.temper.myapplication.R
+import com.temper.myapplication.databinding.ItemListViewBinding
 import com.temper.myapplication.services.response.JobDto
 import com.temper.myapplication.utils.CurrencyUtil
 import com.temper.myapplication.utils.TimeUtil
 import com.temper.myapplication.views.adapter.JobsClickLister
-import com.temper.myapplication.views.components.ListViewItemComponent
 
-class JobsViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
-
-    private val context: Context = view.context
-    private lateinit var jobView : ListViewItemComponent
-    private lateinit var itemClickBtn : Button
+class JobsViewHolder(
+    private val parent: ViewGroup,
+    private val binding: ItemListViewBinding = DataBindingUtil.inflate(
+        LayoutInflater.from(parent.context),
+        R.layout.item_list_view,
+        parent,
+        false
+    )
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(job : JobDto, jobsClickLister: JobsClickLister) {
-        jobView = view.findViewById(R.id.listItem)
-        itemClickBtn = view.findViewById(R.id.itemButton)
+        binding.job = job
 
-        itemClickBtn.setOnClickListener {
+        binding.itemButton.setOnClickListener {
             jobsClickLister.onClicked(job)
         }
 
         if (job.earnings_per_hour != null && job.earnings_per_hour?.amount != null) {
-            jobView.setHourlyRate("${job.earnings_per_hour?.currency?.let {
+            binding.listItem.setHourlyRate("${job.earnings_per_hour?.currency?.let {
                 CurrencyUtil.getCurrencySymbol(
                     it
                 )
@@ -35,15 +38,15 @@ class JobsViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
         }
 
         if (job.job != null) {
-            jobView.setJobType("${job.job?.category?.slug}")
-            jobView.setJobTitle("${job.job?.title}")
+            binding.listItem.setJobType("${job.job?.category?.slug}")
+            binding.listItem.setJobTitle("${job.job?.title}")
         }
 
-        jobView.setHours("${job.starts_at?.let { TimeUtil.calTime(it) }} - ${job.ends_at?.let {
+        binding.listItem.setHours("${job.starts_at?.let { TimeUtil.calTime(it) }} - ${job.ends_at?.let {
             TimeUtil.calTime(it) }}")
 
-        Glide.with(jobView.getImageView())
+        Glide.with(binding.listItem.getImageView())
             .load(job.job?.links?.hero_380_image)
-            .into(jobView.getImageView())
+            .into(binding.listItem.getImageView())
     }
 }

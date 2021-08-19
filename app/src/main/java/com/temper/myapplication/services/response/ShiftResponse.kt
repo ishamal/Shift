@@ -1,5 +1,7 @@
 package com.temper.myapplication.services.response
 
+import com.temper.myapplication.utils.CurrencyUtil
+
 class ShiftResponse {
     var data : ArrayList<JobDto> = ArrayList()
 }
@@ -9,7 +11,12 @@ data class JobDto(
     var job : Job? = null,
     var starts_at : String?,
     var ends_at : String?,
-    var distance : String?
+    var distance : String?,
+    var hourlyRate : String? = "${earnings_per_hour?.currency?.let {
+        CurrencyUtil.getCurrencySymbol(
+            it
+        )
+    }} ${earnings_per_hour?.amount?.let { it}}"
 )
 
 data class EarningsPerHour(

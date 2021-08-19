@@ -20,15 +20,23 @@ open class BaseRepository {
             var output: T? = null
             when (result) {
                 is Output.Success ->{
+                    val currentActivity = Shifts.applicationContext().getCurrentActivity()
+                    Thread {
+                        currentActivity?.runOnUiThread {
+                            if (view != null) {
+//                                view.visibility = View.GONE
+                            }
+                        }
+                    }.start()
                     output = result.output
                 }
 
                 is Output.Error -> {
                     val currentActivity = Shifts.applicationContext().getCurrentActivity()
-                    Thread(Runnable {
+                    Thread {
                         currentActivity?.runOnUiThread {
                             if (view != null) {
-                                view.visibility = View.GONE
+//                                view.visibility = View.GONE
                             }
                             if (Alerter.isShowing) {
                                 Alerter.hide()
@@ -41,7 +49,7 @@ open class BaseRepository {
                                 ).show()
                             }
                         }
-                    }).start()
+                    }.start()
 
                 }
             }
@@ -49,8 +57,12 @@ open class BaseRepository {
         } catch (noInternet: NoConnectivityException) {
             val currentActivity = Shifts.applicationContext().getCurrentActivity()
             if (currentActivity != null) {
-                Thread(Runnable {
+                Thread {
                     currentActivity.runOnUiThread(java.lang.Runnable {
+
+                        if (view != null) {
+//                            view.visibility = View.GONE
+                        }
 
                         if (Alerter.isShowing) {
                             Alerter.hide()
@@ -61,7 +73,7 @@ open class BaseRepository {
                             currentActivity.resources.getString(R.string.NO_INTERNET_CONNECTION)
                         ).show()
                     })
-                }).start()
+                }.start()
             }
             noInternet.message?.let { Log.e("Error", it) }
             return null

@@ -1,28 +1,31 @@
 package com.temper.myapplication.viewModel
 
 import android.view.View
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.*
 import com.temper.myapplication.repositories.ShiftRepository
 import com.temper.myapplication.services.ShiftService
-import com.temper.myapplication.services.response.ShiftResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.temper.myapplication.services.response.JobDto
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 class MainViewModel : ViewModel() {
 
     private val shiftRepository: ShiftRepository = ShiftRepository(ShiftService.client)
 
-    private val shiftResponse  = MutableLiveData<ShiftResponse>()
-    val shiftLiveData : LiveData<ShiftResponse> get() = shiftResponse
+    val isLoading = ObservableBoolean()
+
+    private val shiftResponse  = MutableLiveData<ArrayList<JobDto>>()
+    val shiftLiveData : LiveData<ArrayList<JobDto>> get() = shiftResponse
 
     fun getJobs(date : String, loadingView : View?) {
+        isLoading.set(true)
         viewModelScope.launch {
             val result = shiftRepository.getJobList(date, loadingView)
             if (result != null) {
-                shiftResponse.postValue(result)
+                isLoading.set(false)
+                shiftResponse.postValue(result.data)
+            } else {
+                isLoading.set(false)
             }
         }
     }
