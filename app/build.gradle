@@ -53,17 +53,19 @@ android {
 }
 
 dependencies {
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation "androidx.core:core-ktx:$rootProject.libVersions.ktxCore"
+    implementation "androidx.appcompat:appcompat:$rootProject.libVersions.appcompat"
+    implementation "com.google.android.material:material:$rootProject.libVersions.materialIo"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.libVersions.constraintlayout"
 
     //Retrofit2
     implementation "com.squareup.retrofit2:retrofit:$rootProject.libVersions.retrofit2"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.libVersions.retrofit2"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.libVersions.retrofitGsonConverter"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$rootProject.libVersions.retrofit2CoroutinesAdapter"
+
     //Okhttp3
     implementation "com.squareup.okhttp3:okhttp:$rootProject.libVersions.okhttp3"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.libVersions.okhttp3"
@@ -75,23 +77,20 @@ dependencies {
     //swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.libVersions.swipRefresh"
     implementation "com.github.tapadoo:alerter:$rootProject.libVersions.alerter"
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
 
     //Glide
     implementation "com.github.bumptech.glide:glide:$rootProject.libVersions.Glide"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.libVersions.Glide"
 
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
-
+    //Android Test
     androidTestImplementation 'junit:junit:'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "com.google.truth:truth:1.1.3"
-    androidTestImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
-    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.libVersions.junit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.libVersions.espresso"
+    androidTestImplementation "com.google.truth:truth:$rootProject.libVersions.truth"
+    androidTestImplementation "org.mockito.kotlin:mockito-kotlin:$rootProject.libVersions.mockito"
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.libVersions.arch"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.libVersions.coroutinesTest"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.libVersions.mockwebserver"
 
-
-    def coroutinesTest = "1.3.4"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTest"
-    def mockWebserverVersion = "4.7.2"
-    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockWebserverVersion"
 }
