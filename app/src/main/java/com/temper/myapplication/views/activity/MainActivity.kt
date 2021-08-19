@@ -15,12 +15,15 @@ import com.temper.myapplication.viewModel.MainViewModel
 import com.temper.myapplication.viewModel.MainViewModelFactory
 import com.temper.myapplication.views.adapter.JobsAdapter
 import com.temper.myapplication.views.adapter.JobsClickLister
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), JobsClickLister {
 
-    private lateinit var mainActivityBinding :ActivityMainBinding
-    private lateinit var mainViewModel : MainViewModel
-    private lateinit var jobsAdapter : JobsAdapter
+    private lateinit var mainActivityBinding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var jobsAdapter: JobsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +43,10 @@ class MainActivity : AppCompatActivity(), JobsClickLister {
         }
     }
 
-    private fun getTodayJobs(){
-        mainViewModel.getJobs(TimeUtil.getCurrentDate("yyyy-MM-dd")
-            , mainActivityBinding.progressCircular)
+    private fun getTodayJobs() {
+        mainViewModel.getJobs(
+            TimeUtil.getCurrentDate("yyyy-MM-dd"), mainActivityBinding.progressCircular
+        )
     }
 
     private fun initViewModel() {
@@ -58,16 +62,21 @@ class MainActivity : AppCompatActivity(), JobsClickLister {
     }
 
     private fun observers() {
-        mainViewModel.shiftResponse.observe(this, {
-
-            Thread(Runnable {
-                this.runOnUiThread {
+        mainViewModel.shiftLiveData.observe(
+            this, {
+                GlobalScope.launch (Main){
                     mainActivityBinding.progressCircular.visibility = View.GONE
                     mainActivityBinding.refLayout.isRefreshing = false
                 }
-            }).start()
-            jobsAdapter.setData(it.data)
-        })
+//                Thread {
+//                    this.runOnUiThread {
+//                        mainActivityBinding.progressCircular.visibility = View.GONE
+//                        mainActivityBinding.refLayout.isRefreshing = false
+//                    }
+//                }.start()
+                jobsAdapter.setData(it.data)
+            }
+        )
     }
 
     override fun onClicked(job: JobDto) {
