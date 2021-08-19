@@ -37,5 +37,11 @@ class MainViewModelAndroidTest : TestCase() {
         Truth.assertThat(result != null).isTrue()
     }
 
+    @Test
+    fun fetchData_listNotEmpty() = runBlocking {
+        mainViewModel.getJobs(TimeUtil.getCurrentDate("yyyy-MM-dd"), null)
+        val result = mainViewModel.shiftLiveData.getOrAwaitValue().size
+        Truth.assertThat(result > 0).isTrue()
+    }
 
 }

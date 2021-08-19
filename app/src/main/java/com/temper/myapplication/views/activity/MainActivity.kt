@@ -2,12 +2,13 @@ package com.temper.myapplication.views.activity
 
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.temper.myapplication.R
+import com.temper.myapplication.Shifts
 import com.temper.myapplication.databinding.ActivityMainBinding
 import com.temper.myapplication.services.response.JobDto
 import com.temper.myapplication.utils.TimeUtil
@@ -15,9 +16,6 @@ import com.temper.myapplication.viewModel.MainViewModel
 import com.temper.myapplication.viewModel.MainViewModelFactory
 import com.temper.myapplication.views.adapter.JobsAdapter
 import com.temper.myapplication.views.adapter.JobsClickLister
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), JobsClickLister {
 
@@ -27,56 +25,56 @@ class MainActivity : AppCompatActivity(), JobsClickLister {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
+
+        Shifts.applicationContext().setCurrentActivity(this)
+
+        mainActivityBinding = DataBindingUtil.setContentView(
+            this, R.layout.activity_main
+        )
+
+        mainActivityBinding.lifecycleOwner = this
         val view = mainActivityBinding.root
         setContentView(view)
-
         mainActivityBinding.todayTextView.text = TimeUtil.formatDate()
 
         initViewModel()
         initRecyclerView()
         getTodayJobs()
-        observers()
 
         mainActivityBinding.refLayout.setOnRefreshListener {
             getTodayJobs()
+        }
+
+        mainActivityBinding.logInButton.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+
+        mainActivityBinding.signUpButton.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
     private fun getTodayJobs() {
         mainViewModel.getJobs(
-            TimeUtil.getCurrentDate("yyyy-MM-dd"), mainActivityBinding.progressCircular
+            TimeUtil.getCurrentDate("yyyy-MM-dd")
+            , mainActivityBinding.progressCircular
         )
     }
 
     private fun initViewModel() {
         val viewModelFactory = MainViewModelFactory()
         mainViewModel =
-            ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory)
+                .get(MainViewModel::class.java)
+        mainActivityBinding.viewModel = mainViewModel
     }
 
     private fun initRecyclerView() {
-        jobsAdapter = JobsAdapter(this, ArrayList(), this)
+        jobsAdapter = JobsAdapter(this
+            , ArrayList()
+            , this)
         mainActivityBinding.shiftList.layoutManager = LinearLayoutManager(this)
         mainActivityBinding.shiftList.adapter = jobsAdapter
-    }
-
-    private fun observers() {
-        mainViewModel.shiftLiveData.observe(
-            this, {
-                GlobalScope.launch (Main){
-                    mainActivityBinding.progressCircular.visibility = View.GONE
-                    mainActivityBinding.refLayout.isRefreshing = false
-                }
-//                Thread {
-//                    this.runOnUiThread {
-//                        mainActivityBinding.progressCircular.visibility = View.GONE
-//                        mainActivityBinding.refLayout.isRefreshing = false
-//                    }
-//                }.start()
-                jobsAdapter.setData(it.data)
-            }
-        )
     }
 
     override fun onClicked(job: JobDto) {
